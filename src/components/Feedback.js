@@ -1,34 +1,35 @@
 import React, { Component } from 'react'
 import { Table, Popconfirm, message, Tag } from 'antd';
 
+const data = [
+		{
+			key: 1,
+			id: 1,
+			name: 'Иван Иванов',
+			status: true,
+			feedback: 'Отличныя работа, буду всем советовать',
+		},
+		{
+			key: 2,
+			id: 2,
+			name: 'Петр Петров',
+			status: false,
+			feedback: 'Сделали крутой ремонт, спасибо большое',
+		},
+		{
+			key: 3,
+			id: 3,
+			name: 'Вася Смирнов',
+			status: true,
+			feedback: 'Быстро качетвенно, не дорого',
+		}
+]
+
 export default class Feedback extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			data : [
-				{
-					key: 1,
-					id: 1,
-					name: 'Иван Иванов',
-					status: true,
-					feedback: 'Отличныя работа, буду всем советовать',
-				},
-				{
-					key: 2,
-					id: 2,
-					name: 'Петр Петров',
-					status: false,
-					feedback: 'Сделали крутой ремонт, спасибо большое',
-				},
-				{
-					key: 3,
-					id: 3,
-					name: 'Вася Смирнов',
-					status: true,
-					feedback: 'Быстро качетвенно, не дорого',
-				},
-			] 
 		}
 
 		this.columns = [
@@ -39,33 +40,30 @@ export default class Feedback extends Component {
 					title: 'Статус',
 					dataIndex: 'status',
 					key: 'status',
-					render: () => {
-						this.items = this.state.data.map((item, key) => {
-							console.log(item.status)
-							if ( item.status === true){
-								<Tag color="success">Активен</Tag>
-							}
-							// item.status ? <Tag color="success">Активен</Tag> : <Tag color="default">Не активен</Tag>
-						})
-					}
+					// render: () => {
+					// 	this.items = this.data.map((item, key) => 
+					// 		// console.log(item.status)
+					// 		item.status ?  <Tag color="success">Активен</Tag>  : <Tag color="default">Не активен</Tag>
+					// 	)
+					// }
 				},
 				{
 					title: 'Действия',
 					dataIndex: '',
 					key: 'x',
-					render: (record) => 
-					this.state.data.length >= 1 ? (
-						<div>
-						<Popconfirm title="Вы уверены что хотите удалить?" okText="Да" cancelText="Нет"
-						onConfirm={() => this.handleDelete(record.key)}>
-								<a href="/feedback">Удалить</a>
-						</Popconfirm>
-						<Popconfirm title="Разместить отзыв на сайте?" okText="Да" cancelText="Нет"
-						onConfirm={() => this.handleTweet()}>
-								<a href="/feedback" className='feedback__link'>Опубликовать</a>
-						</Popconfirm>
-					</div>
-					) :null,
+					// render: (record) => 
+					// this.data.length >= 1 ? (
+					// 	<div>
+					// 	<Popconfirm title="Вы уверены что хотите удалить?" okText="Да" cancelText="Нет"
+					// 	onConfirm={() => this.handleDelete(record.key)}>
+					// 			<a href="/feedback">Удалить</a>
+					// 	</Popconfirm>
+					// 	<Popconfirm title="Разместить отзыв на сайте?" okText="Да" cancelText="Нет"
+					// 	onConfirm={() => this.handleTweet()}>
+					// 			<a href="/feedback" className='feedback__link'>Опубликовать</a>
+					// 	</Popconfirm>
+					// </div>
+					// ) :null,
 				},
 			];
 
@@ -82,7 +80,7 @@ export default class Feedback extends Component {
 	}
 
 	render() {
-		const { data } = this.state;
+		// const { data } = this.state;
 		const columns = this.columns.map(col => {  return col; } )
       
     
