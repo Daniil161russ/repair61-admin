@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Layout, Menu, Button, Popconfirm } from 'antd';
+import { Layout, Menu, Button, Popconfirm, Form, Input} from 'antd';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom'
 
 import 'antd/dist/antd.css';
@@ -15,7 +15,9 @@ import {
 	BarChartOutlined,
 	LogoutOutlined,
   UserOutlined,
-  UnorderedListOutlined,
+	UnorderedListOutlined,
+	LockOutlined,
+	
 } from '@ant-design/icons';
 
 import Main from './Main'
@@ -28,11 +30,19 @@ import Statistics from './Statistics'
 
 const { Header, Sider, Content } = Layout;
 
-export default class App extends Component {
+class Panel extends React.Component {
+	constructor(props) {
+		super(props)
+		this.state = {
+			loggedIn: false,
+		}
+	}
+	
+
 	state = {
 		collapsed: false,
 		size: 'large',
-  };
+	};
 
   toggle = () => {
     this.setState({
@@ -44,7 +54,7 @@ export default class App extends Component {
 		const { size } = this.state;
     return (
 			<Router>
-				<Layout>
+				<Layout> 
         <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
           <div className="logo" />
           <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
@@ -92,7 +102,8 @@ export default class App extends Component {
 								</div>
 							</div>
 							<div className="header-right">
-								<Popconfirm title="Вы уверенны что хотите выйти？" okText="Да" cancelText="Нет" placement="bottomRight">
+								<Popconfirm title="Вы уверенны что хотите выйти？"
+								 onConfirm={this.props.onSignOut} okText="Да" cancelText="Нет" placement="bottomRight">
 									<Button type="primary"
 												shape="circle"
 												icon={<LogoutOutlined />} 
@@ -114,7 +125,92 @@ export default class App extends Component {
 						</Content>
 					</Layout>
 				</Layout>
-			</Router>
-    );
+			</Router>			
+			);
   }
+}
+
+class LogIn extends React.Component {
+
+	
+  onFinish = values => {
+		let username = values.username;
+		let password = values.password;
+		this.props.onSignIn(username, password)
+	};
+
+	
+	render() {
+		return(
+			<div className="logIn">
+				<Form
+					name="normal_login"
+					className="login-form"
+					initialValues={{ remember: true }}
+					onFinish={this.onFinish}
+				>
+					<Form.Item
+						name="username"
+						rules={[{ required: true, message: 'Please input your Username!' }]}
+					>
+						<Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+					</Form.Item>
+					<Form.Item
+						name="password"
+						rules={[{ required: true, message: 'Please input your Password!' }]}
+					>
+						<Input
+							prefix={<LockOutlined className="site-form-item-icon" />}
+							type="password"
+							placeholder="Password"
+						/>
+					</Form.Item>
+
+					<Form.Item>
+						<Button type="primary" htmlType="submit" className="login-form-button">
+							Log in
+						</Button>
+					</Form.Item>
+    		</Form>
+			</div>
+		);
+	}
+}
+
+export default class App extends Component {
+	constructor(props) {
+		super(props)
+	
+		this.state = {
+			user: [],
+			loggedIn: false,
+		}
+	}
+
+	signIn(username, password) {
+    this.setState({
+      user: {
+        username,
+        password,
+			},
+			loggedIn:true		
+    })
+	}
+	
+	signOut() {
+    this.setState({loggedIn: false})
+  }
+	
+	render() {
+		return (
+			<div>
+				{ 
+				(this.state.loggedIn) ? 
+				<Panel onSignOut={this.signOut.bind(this)}/> 
+				: 
+				<LogIn onSignIn={this.signIn.bind(this)}/> 
+			}
+			</div>
+		);
+	}
 }

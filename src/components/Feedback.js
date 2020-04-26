@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
- import { Table, Popconfirm, message, Tag } from 'antd';
+import { Table, Popconfirm, message, Tag } from 'antd';
 
  export default class Feedback extends Component {
  	constructor(props) {
