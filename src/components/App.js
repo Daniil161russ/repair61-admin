@@ -149,11 +149,13 @@ class LogIn extends React.Component {
 					initialValues={{ remember: true }}
 					onFinish={this.onFinish}
 				>
+					<h1>Ремонт под ключ</h1>
+					<span className="login-form__desrpition">панель администратора</span>
 					<Form.Item
 						name="username"
 						rules={[{ required: true, message: 'Please input your Username!' }]}
 					>
-						<Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+						<Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Логин" />
 					</Form.Item>
 					<Form.Item
 						name="password"
@@ -162,13 +164,13 @@ class LogIn extends React.Component {
 						<Input
 							prefix={<LockOutlined className="site-form-item-icon" />}
 							type="password"
-							placeholder="Password"
+							placeholder="Пароль"
 						/>
 					</Form.Item>
 
 					<Form.Item>
 						<Button type="primary" htmlType="submit" className="login-form-button">
-							Log in
+							Войти
 						</Button>
 					</Form.Item>
     		</Form>
@@ -209,7 +211,7 @@ export default class App extends Component {
 				<Panel onSignOut={this.signOut.bind(this)}/> 
 				: 
 				<LogIn onSignIn={this.signIn.bind(this)}/> 
-			}
+				}
 			</div>
 		);
 	}

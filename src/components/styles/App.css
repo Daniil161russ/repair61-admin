@@ -142,3 +142,12 @@ ul{
 .logIn form{
 	width: 30%;
 }
+
+.login-form h1{
+	margin: 0;
+}
+
+.login-form__desrpition{
+	display: inline-block;
+	margin-bottom: 10px;
+}
