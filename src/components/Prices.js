@@ -1,5 +1,5 @@
 import React, { Component, useContext, useState, useEffect, useRef } from 'react'
-import { Table, Input, Form } from 'antd';
+import { Table, InputNumber, Form } from 'antd';
 
 const EditableContext = React.createContext();
 
@@ -65,16 +65,15 @@ const EditableCell = ({
           },
         ]}
       >
-        <Input ref={inputRef} onPressEnter={save} onBlur={save}/>
+        <InputNumber ref={inputRef} onPressEnter={save} onBlur={save}/>
+        {/* <Input /> */}
       </Form.Item>
     ) : (
-      <div
-        className="editable-cell-value-wrap"
-        style={{
-          paddingRight: 24,
-        }}
-        onClick={toggleEdit}
-      >
+      <div className="editable-cell-value-wrap"
+          style={{
+            paddingRight: 24,
+          }}
+          onClick={toggleEdit}>
         {children}
       </div>
     );
@@ -99,73 +98,73 @@ export default class Prices extends Component {
           key: '0',
           id: '1',
           coating: 'Ламинат',
-          price: '100',
+          price: 100,
         },
         {
           key: '1',
           id: '2',
           coating: 'Паркетная доска',
-          price: '200',
+          price: 200,
 				},
 				{
           key: '2',
           id: '3',
           coating: 'Керамогранит',
-					price: '350',
+					price: 350,
 				},
 				{
           key: '3',
           id: '4',
           coating: 'Линолеум',
-					price: '160',
+					price: 160,
 				},
 				{
           key: '4',
           id: '5',
           coating: 'Наливные полы',
-					price: '500',
+					price: 500,
 				},
 				{
           key: '5',
           id: '6',
           coating: 'Краснка',
-					price: '220',
+					price: 220,
 				},
 				{
           key: '6',
           id: '7',
           coating: 'Обои',
-					price: '300',
+					price: 300,
 				},
 				{
           key: '7',
           id: '8',
           coating: 'Декор. штукатурка',
-					price: '350',
+					price: 350,
 				},
 				{
           key: '8',
           id: '9',
           coating: 'Плитка',
-					price: '300',
+					price: 300,
 				},
 				{
           key: '9',
           id: '10',
           coating: 'Натяжные потолки',
-					price: '200',
+					price: 200,
 				},
 				{
           key: '10',
           id: '11',
           coating: 'Гипсокартон 1 ур.',
-					price: '400',
+					price: 400,
 				},
 				{
           key: '11',
           id: '12',
           coating: 'Гипсокартон 2-3 ур.',
-					price: '650',
+					price: 650,
         },
       ],
 		};

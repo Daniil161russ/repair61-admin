@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
-import { Layout, Menu, Button, Popconfirm, Form, Input} from 'antd';
-import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom'
+import axios from 'axios';
+import { Layout, Menu, Button, Popconfirm} from 'antd';
+import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
+
+import * as ROUTES from '../constants/routes'
 
 import 'antd/dist/antd.css';
 import './styles/App.css'
@@ -12,12 +15,9 @@ import {
 	PhoneOutlined,
 	DollarOutlined,
 	FileDoneOutlined,
-	BarChartOutlined,
 	LogoutOutlined,
   UserOutlined,
 	UnorderedListOutlined,
-	LockOutlined,
-	
 } from '@ant-design/icons';
 
 import Main from './Main'
@@ -26,7 +26,7 @@ import Prices from './Prices'
 import CallBack from './CallBack'
 import OurWorks from './OurWorks'
 import Feedback from './Feedback'
-import Statistics from './Statistics'
+import SingIn from './SingIn'
 
 const { Header, Sider, Content } = Layout;
 
@@ -34,7 +34,7 @@ class Panel extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			loggedIn: false,
+			isLoggedIn: true,
 		}
 	}
 	
@@ -48,7 +48,24 @@ class Panel extends React.Component {
     this.setState({
       collapsed: !this.state.collapsed,
     });
-  };
+	};
+
+	logOut() {
+		const config = {
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem('api_token')}`
+			}
+		};
+		axios.post('https://api.rostovrepair161.ru/api/logout', {}, config)
+			.then((res) => {
+				if (res.status === 200) {
+					localStorage.removeItem('api_token');
+					localStorage.setItem('auth', false)
+					this.props.isAuth(JSON.parse(localStorage.getItem('auth')));
+					this.props.history.push('/signin')
+				}
+			});
+	}
 
   render() {
 		const { size } = this.state;
@@ -61,31 +78,27 @@ class Panel extends React.Component {
 						<h3 className="menu__title">Меню</h3>
 							<Menu.Item key="1">
 								<UserOutlined />
-								<Link to={`/`}>Главная</Link>
+								<Link to={ROUTES.MAIN}>Главная</Link>
 							</Menu.Item>
 							<Menu.Item key="2">
 								<UnorderedListOutlined />
-								<Link to={`/orders`}>Заказы</Link>
+								<Link to={ROUTES.ORDERS}>Заказы</Link>
             	</Menu.Item>
 							<Menu.Item key="3">
 								<DollarOutlined />
-								<Link to={`/prices`}>Цены</Link>
+								<Link to={ROUTES.PRICES}>Цены</Link>
             	</Menu.Item>
 							<Menu.Item key="4">
 								<PhoneOutlined />
-								<Link to={`/call-back`}>Обратные звонки</Link>
+								<Link to={ROUTES.CALLBACK}>Обратные звонки</Link>
 							</Menu.Item>
 							<Menu.Item key="5">
 								<FileDoneOutlined />
-								<Link to={`/ourworks`}>Наши работы</Link>
+								<Link to={ROUTES.OURWORKS}>Наши работы</Link>
 							</Menu.Item>
 							<Menu.Item key="6">
 								<LikeOutlined />
-								<Link to={`/feedback`}>Отзывы</Link>
-							</Menu.Item>
-							<Menu.Item key="7">
-								<BarChartOutlined />
-								<Link to={`/statistics`}>Статистика</Link>
+								<Link to={ROUTES.FEEDBACK}>Отзывы</Link>
 							</Menu.Item>
 						</Menu>
 					</Sider>
@@ -103,7 +116,7 @@ class Panel extends React.Component {
 							</div>
 							<div className="header-right">
 								<Popconfirm title="Вы уверенны что хотите выйти？"
-								 onConfirm={this.props.onSignOut} okText="Да" cancelText="Нет" placement="bottomRight">
+								 onConfirm={this.logOut} okText="Да" cancelText="Нет" placement="bottomRight">
 									<Button type="primary"
 												shape="circle"
 												icon={<LogoutOutlined />} 
@@ -113,15 +126,12 @@ class Panel extends React.Component {
 							</div>
 						</Header>
 						<Content className="site-layout-background"style={{ margin: '24px 16px', padding: 24, minHeight: 710,}} >
-							<Switch>
-								<Route exact={true} path="/" component={Main} />
-								<Route path="/orders" component={Orders} />
-								<Route path="/prices" component={Prices} />
-								<Route path="/call-back" component={CallBack} />
-								<Route path="/ourworks" component={OurWorks} />
-								<Route path="/feedback" component={Feedback} />
-								<Route path="/statistics" component={Statistics} />		
-							</Switch>			
+								<Route exact path={ROUTES.MAIN} component={Main} />
+								<Route path={ROUTES.ORDERS} component={Orders} />
+								<Route path={ROUTES.PRICES} component={Prices} />
+								<Route path={ROUTES.CALLBACK} component={CallBack} />
+								<Route path={ROUTES.OURWORKS} component={OurWorks} />
+								<Route path={ROUTES.FEEDBACK} component={Feedback} />		
 						</Content>
 					</Layout>
 				</Layout>
@@ -130,89 +140,28 @@ class Panel extends React.Component {
   }
 }
 
-class LogIn extends React.Component {
-
-	
-  onFinish = values => {
-		let username = values.username;
-		let password = values.password;
-		this.props.onSignIn(username, password)
-	};
-
-	
-	render() {
-		return(
-			<div className="logIn">
-				<Form
-					name="normal_login"
-					className="login-form"
-					initialValues={{ remember: true }}
-					onFinish={this.onFinish}
-				>
-					<h1>Ремонт под ключ</h1>
-					<span className="login-form__desrpition">панель администратора</span>
-					<Form.Item
-						name="username"
-						rules={[{ required: true, message: 'Please input your Username!' }]}
-					>
-						<Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Логин" />
-					</Form.Item>
-					<Form.Item
-						name="password"
-						rules={[{ required: true, message: 'Please input your Password!' }]}
-					>
-						<Input
-							prefix={<LockOutlined className="site-form-item-icon" />}
-							type="password"
-							placeholder="Пароль"
-						/>
-					</Form.Item>
-
-					<Form.Item>
-						<Button type="primary" htmlType="submit" className="login-form-button">
-							Войти
-						</Button>
-					</Form.Item>
-    		</Form>
-			</div>
-		);
-	}
-}
-
 export default class App extends Component {
 	constructor(props) {
 		super(props)
 	
 		this.state = {
-			user: [],
-			loggedIn: false,
+			user: props.userData,
+			isLoggedIn: JSON.parse(localStorage.getItem('auth')),
 		}
 	}
 
-	signIn(username, password) {
-    this.setState({
-      user: {
-        username,
-        password,
-			},
-			loggedIn:true		
-    })
+	isAuth = (value) => {
+    this.setState({ isLoggedIn: value })
 	}
-	
-	signOut() {
-    this.setState({loggedIn: false})
-  }
 	
 	render() {
 		return (
-			<div>
-				{ 
-				(this.state.loggedIn) ? 
-				<Panel onSignOut={this.signOut.bind(this)}/> 
-				: 
-				<LogIn onSignIn={this.signIn.bind(this)}/> 
+			<Router>
+				{this.state.isLoggedIn
+					? <Panel isAuth={this.isAuth}/> 
+					: <SingIn isAuth={this.isAuth}/> 			
 				}
-			</div>
+			</Router>
 		);
 	}
 }

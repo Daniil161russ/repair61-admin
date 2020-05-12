@@ -151,3 +151,18 @@ ul{
 	display: inline-block;
 	margin-bottom: 10px;
 }
+
+.orders__info{
+	display: flex;
+	flex-direction: column;
+}
+
+.cards__list{
+	display: flex;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+}
+
+.ant-form-item-control{
+	display: flex;
+}

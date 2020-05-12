@@ -71,7 +71,7 @@ import { Table, Popconfirm, message, Tag } from 'antd';
  		message.warning('Отзыв удален');
 	 };
 
- 	handleTweet = () => { 
+ 	handleTweet = () => {
  		message.success('Отзыв опубликован!')	
  	}
 
@@ -84,10 +84,10 @@ import { Table, Popconfirm, message, Tag } from 'antd';
  			<div>
  				<h2>Отзывы</h2>
  				<Table columns={columns}
- 							 pagination={false}
-     					 expandable={{
-                rowExpandable: record => record.name !== 'Not Expandable',}}
-                dataSource={data}/>
+ 							pagination={false}
+     					expandable={{
+              rowExpandable: record => record.name !== 'Not Expandable',}}
+              dataSource={data}/>
  			</div>
  		)
  	}
