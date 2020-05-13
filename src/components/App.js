@@ -36,6 +36,7 @@ class Panel extends React.Component {
 		this.state = {
 			isLoggedIn: true,
 		}
+		this.logOut = this.logOut.bind(this);
 	}
 	
 
@@ -50,7 +51,7 @@ class Panel extends React.Component {
     });
 	};
 
-	logOut() {
+	logOut () {
 		const config = {
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem('api_token')}`
@@ -62,7 +63,7 @@ class Panel extends React.Component {
 					localStorage.removeItem('api_token');
 					localStorage.setItem('auth', false)
 					this.props.isAuth(JSON.parse(localStorage.getItem('auth')));
-					this.props.history.push('/signin')
+					// this.props.history.push('/signin')
 				}
 			});
 	}

@@ -53,14 +53,11 @@ export default class CallBack extends Component {
 				Authorization: `Bearer ${localStorage.getItem('api_token')}`
 			}
 		};
-		// const feedback = [...this.state.feedback];
 		axios.delete(`https://api.rostovrepair161.ru/api/remove-feedback/${key}`, config)
 		.then( response => {
 			if (response.status === 204) {
 					const newList = this.state.feedback.filter(item => item.id_feedback !== key)
 					this.setState({feedback: newList})
-					// this.state.feedback.splice(this.state.feedback.id_feedback.indexOf(key), 1);
-					// this.state.feedback.filter(item => item.key !== key)
 				message.warning('Обратный звонок удален');
 			}
 		})
